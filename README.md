@@ -1,11 +1,11 @@
-# vim-go-tutorial
+# vim-go-tutorial-TR
 
-Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
+vim-go için Türkçe Kılavuz.
 
-# Table of Contents
+# İçindekiler Tablosu
 
-1. [Quick Setup](#quick-setup)
-2. [Hello World](#hello-world)
+1. [Yükleme](#yükleme)
+2. [Merhaba Dünya](#merhaba-dünya)
 3. [Run it](#run-it)
 4. [Build it](#build-it)
 5. [Fix it](#fix-it)
@@ -35,19 +35,18 @@ Tutorial for vim-go. A simple tutorial on how to install and use vim-go.
   * [Method stubs implementing an interface](#method-stubs-implementing-an-interface)
 15. [Share it](#share-it)
 
-# Quick Setup
+# Yükleme
 
-We're going to use `vim-plug` to install vim-go. Feel free to use other plugin
-managers instead. We will create a minimal `~/.vimrc`, and add to it as we go along.
+vim-go'yu yüklemek için `vim-plug` eklenti yöneticisini yükleyeceğiz.(Başka bir eklenti yöneticisi kullanıyorsanız onunla da indirebilirsiniz.)
 
-First fetch and install `vim-plug` along with `vim-go`:
+Öncelikle `vim-plug` ve `vim-go` yu bilgisayarımıza çekip yüklüyoruz :
 
 ```
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 git clone https://github.com/fatih/vim-go.git ~/.vim/plugged/vim-go
 ```
 
-Create `~/.vimrc` with following content:
+Ardından basit bir `~/.vimrc` dosyası oluşturmamız gerek. Dosya içeriği aşağıdaki gibi olmalıdır.
 
 ```vim
 call plug#begin()
@@ -63,52 +62,48 @@ installation process as we don't need to provide binaries for multiple
 platforms). If you already have some of the dependencies (such as `guru`,
 `goimports`) call `:GoUpdateBinaries` to update the binaries. 
 
-For the tutorial, all our examples will be under
-`GOPATH/src/github.com/fatih/vim-go-tutorial/`. Please be sure you're inside
-this folder. This will make it easy to follow the
-tutorial. If you already have a `GOPATH` set up just execute:
+Bu kılavuz kapsamındaki tüm örnekler 
+`GOPATH/src/github.com/fatih/vim-go-tutorial/` dizininde bulunacaktır.
+Kılavuzdaki diğer başlıklara başlamadan önce bu dizinde olduğunuza emin olun.İşiniz çok kolaylaşacak.
 
 ```
 go get github.com/fatih/vim-go-tutorial
 ```
 
-Or create the folder, if necessary. 
+Yahut siz isterseniz kendi klasörünüzü de oluşturabilirsiniz. 
 
 
-# Hello World!
+# Merhaba Dünya!
 
-Open the `main.go` file from your terminal:
+Terminalden `main.go` isimli dosyayı açın: 
 
 ```
 vim main.go
 ```
 
-It's a very basic file that prints `vim-go` to stdout.
+Gördüğünüz gibi bu kod parçasının görevi sadece stdout'a `vim-go` yazdırmak.
 
-# Run it
+# Çalıştır
 
-You can easily run the file with `:GoRun`. Under the hood it calls `go run` for
-the current file. You should see that it prints `vim-go`.
+Bu dosyayı `:GoRun` komutunu vererek kolayca çalıştırabilirsiniz. `:GoRun` komutu arkaplanda sizin açık olan dosyanız için `go run` komutunu çalıştırır. Bu komutu verdikten sonra ekranda `vim-go` yazısını görebilirsiniz.
 
 # Build it
 
-Replace `vim-go` with `Hello Gophercon`. Let us compile the file instead of running it.
-For this we have `:GoBuild`. If you call it, you should see this message: 
+Koddaki `vim-go` yazan yeri `Hello Gophercon` olarak değiştirin. Bu değişiklikten sonra kodu çalıştırmak yerine derlemeyi deneyelim. Bu iş için `:GoBuild` komutunu kullanıyor olacağız.Eğer `:GoBuild` komutunu çalıştırırsanız ekranda aşağıdaki gibi bir mesaj göreceksiniz. 
 
 ```
 vim-go: [build] SUCCESS
 ```
 
-Under the hood it calls `go build`, but it's a bit smarter. It does a couple of
-things differently: 
+Bu komut ise arkaplanda `go build` komutunu çağırır, ancak bunu bazı şeyleri farklı yaparak biraz daha akıllı bir biçimde gerçekleştirir. 
 
 * No binaries are created; you can call `:GoBuild` multiple times without
   polluting your workspace.
 * It automatically `cd`s into the source package's directory
 * It parses any errors and shows them inside a quickfix list 
-* It automatically detects the GOPATH and modifies it if needed (detects
+* Otomatik olarak GOPATH'i bulur ve gerekliyse değiştirir.(detects
   projects such as `gb`, `Godeps`, etc..)
-* Runs async if used within Vim 8.0.xxx or NeoVim
+* Eğer Vim 8.0.xxx ya da NeoVim ile kullanılıyorsa asenkron bir şekilde çalışır.
 
 # Fix it
 
