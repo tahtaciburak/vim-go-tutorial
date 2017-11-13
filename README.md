@@ -6,8 +6,8 @@ vim-go için Türkçe Kılavuz.
 
 1. [Yükleme](#yükleme)
 2. [Merhaba Dünya](#merhaba-dünya)
-3. [Run it](#run-it)
-4. [Build it](#build-it)
+3. [Çalıştır](#çalıştır)
+4. [İnşa Et](#inşa-et)
 5. [Fix it](#fix-it)
 6. [Test it](#test-it)
 7. [Cover it](#cover-it)
@@ -54,13 +54,7 @@ Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 call plug#end()
 ```
 
-Or open Vim and execute `:GoInstallBinaries`. This is a `vim-go` command that
-installs all `vim-go` dependencies for you. It doesn't download pre compiled
-binaries, instead it calls `go get` under the hood, so the binaries are all
-compiled in your host machine (which is both safe and simplifies the
-installation process as we don't need to provide binaries for multiple
-platforms). If you already have some of the dependencies (such as `guru`,
-`goimports`) call `:GoUpdateBinaries` to update the binaries. 
+Ya da Vim'i açıp `:GoInstallBinaries` komutunu çalıştırabilirsiniz.Bu aslında bir `vim-go` komutudur ve ihtiyacınız olan tüm bağımlılıkları sizin yerinize yükler.Bu komut önceden derlenmiş dosyaları indirmek yerine kendi bilgisayarınızda derler.(bu hem güvenli hem de yükle işlemini basitleştirecek bir şeydir, her platform için derlenmiş dosyaları sunmamıza gerek kalmadan  işlerimizi halledebiliyoruz.)Eğer halihazırda bazı bağımlılıklarınız varsa(`guru` yahut `goımports` gibi) onları güncellemek için `:GoUpdateBinaries` komutunu çalıştırın.
 
 Bu kılavuz kapsamındaki tüm örnekler 
 `GOPATH/src/github.com/fatih/vim-go-tutorial/` dizininde bulunacaktır.
@@ -87,7 +81,7 @@ Gördüğünüz gibi bu kod parçasının görevi sadece stdout'a `vim-go` yazd�
 
 Bu dosyayı `:GoRun` komutunu vererek kolayca çalıştırabilirsiniz. `:GoRun` komutu arkaplanda sizin açık olan dosyanız için `go run` komutunu çalıştırır. Bu komutu verdikten sonra ekranda `vim-go` yazısını görebilirsiniz.
 
-# Build it
+# İnşa Et
 
 Koddaki `vim-go` yazan yeri `Hello Gophercon` olarak değiştirin. Bu değişiklikten sonra kodu çalıştırmak yerine derlemeyi deneyelim. Bu iş için `:GoBuild` komutunu kullanıyor olacağız.Eğer `:GoBuild` komutunu çalıştırırsanız ekranda aşağıdaki gibi bir mesaj göreceksiniz. 
 
@@ -97,17 +91,16 @@ vim-go: [build] SUCCESS
 
 Bu komut ise arkaplanda `go build` komutunu çağırır, ancak bunu bazı şeyleri farklı yaparak biraz daha akıllı bir biçimde gerçekleştirir. 
 
-* No binaries are created; you can call `:GoBuild` multiple times without
-  polluting your workspace.
-* It automatically `cd`s into the source package's directory
-* It parses any errors and shows them inside a quickfix list 
+* İkili dosyalar oluşturulmaz; böylelikle çalıştığınız dizinde karmaşa yaratmadan `:GoBuild` komutunu istediğiniz kadar çağırabilirsiniz.
+* Otomatik olarak kaynak pakedin dizine gider.
+* Her hatayı ayrıştırır(parse) ve quickfix listesinde onları gösterir .
 * Otomatik olarak GOPATH'i bulur ve gerekliyse değiştirir.(detects
   projects such as `gb`, `Godeps`, etc..)
-* Eğer Vim 8.0.xxx ya da NeoVim ile kullanılıyorsa asenkron bir şekilde çalışır.
+* Eğer Vim 8.0.xxx ya da NeoVim ile kullanılıyorsa asenkron bir şekilde çalışabilir.
 
 # Fix it
 
-Let's introduce two errors by adding two compile errors:
+Kodumuza iki tane derleme hatası ekleyerek hatalara bir giriş yapalım.
 
 ```go
 var b = foo()
@@ -118,37 +111,26 @@ func main() {
 }
 ```
 
-Save the file and call `:GoBuild` again. 
+Dosyayı kaydedin ve `:GoBuild` komutunu çalıştırın.
 
-This time the quickfix view will be opened. To jump between the errors you can
-use `:cnext` and `:cprevious`. Let us fix the first error, save the
-file and call `:GoBuild` again. You'll see the quickfix list is updated with a
-single error. Remove the second error as well, save the file and call
-`:GoBuild` again. Now because there are no more errors, vim-go automatically
-closes the quickfix window for you.
+Komutu çalıştırdığınızda quickfix ekranı karşınıza gelir. Hatalar arasında gezinmek için `:cnext` ve `:cprevious` komutlarını kullanabilirsiniz. İlk hatayı fixleyelim ardından dosyayı kaydedelim ve `:GoBuild` komutunu çalıştıralım. quickfix listesindeki hata sayısının bir azaldığını göreceksiniz. İkinci hataylı da fixledikten sonra da dosyayı kaydedip `:GoBuild` komutunu çalıştıralım. Herhangi bir derleme hatamız kalmadığı için `vim-go` otomatik olarak quickfix ekranını sizin için kapatır. 
 
-Let us improve it a little bit. Vim has a setting called `autowrite` that
-writes the content of the file automatically if you call `:make`. vim-go also
-makes use of this setting. Open your `.vimrc` and add the following:
+Bunu biraz daha geliştirmek istersek; Vim `autowrite` adında bir ayara sahip, eğer `:make` komutunu çağırırsanız dosyanın içerğini otomatik olarak dosyaya yazar. vim-go da bu ayarı kullanır. `.vimrc` dosyasını açın ve şu satırı ekleyin.
 
 ```
 set autowrite
 ```
 
-Now you don't have to save your file anymore when you call `:GoBuild`.  If we
-reintroduce the two errors and call `:GoBuild`, we can now iterate much more
-quickly by only calling `:GoBuild`.
+Artık dosyalarınızı kaydetmeye gerek kalmaksızın `:GoBuild` komutunu verebilirsiniz. Eğer bu bölümün başındaki kodu tekrar fixlemeye çalışırsanız daha az iterasyonda hızlıca hallettiğinizin farkına varabilirsiniz.
 
-`:GoBuild` jumps to the first error encountered. If you don't want to jump
-append the `!` (bang) sign: `:GoBuild!`.
 
-In all the `go` commands, such as `:GoRun`, `:GoInstall`, `:GoTest`, etc..,
-whenever there is an error the quickfix window always will pop up.
+`:GoBuild` karşılaşılan ilk hataya gider.Eğer bunu istemiyorsanız komutun sonuna bir ünlem koyabilirsiniz `!` yani komutumuz şu hali alır: `:GoBuild!`.
 
-### vimrc improvements
+Tüm `go` komutlarında (`:GoRun`, `:GoInstall`, `:GoTest`, vs..), bir hata oluştuğu takdirde, quickfix ekranı pop up olarak gözükür.
 
-* You can add some shortcuts to make it easier to jump between errors in quickfix
-list:
+### vimrc 'yi iyileştirmek
+
+* quickfix listesinde kolayca gezinmek için bazı kısayollar ekleyebilirsiniz.
 
 ```vi
 map <C-n> :cnext<CR>
