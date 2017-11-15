@@ -9,7 +9,7 @@ vim-go için Türkçe Kılavuz.
 3. [Çalıştır](#çalıştır)
 4. [İnşa Et](#inşa-et)
 5. [Fix it](#fix-it)
-6. [Test it](#test-it)
+6. [Test et](#test-et)
 7. [Cover it](#cover-it)
 8. [Edit it](#edit-it)
   * [Imports](#imports)
@@ -138,32 +138,28 @@ map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 ```
 
-* I also use these shortcuts to build and run a Go program with `<leader>b` and
-`<leader>r`:
+*Bir go programını derlemek ve çalıştırmak için `<leader>b` ve
+`<leader>r` kısayolunu da kullanıyorum:
 
 ```vim
 autocmd FileType go nmap <leader>b  <Plug>(go-build)
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 ```
 
-* There are two types of error lists in Vim. One is called `location list` the
-other `quickfix`. Unfortunately the commands for each lists are different. So
-`:cnext` only works for `quickfix` list, for `location lists` you have to use
-`:lnext`. Some of the commands in `vim-go` open a location list, because
-location lists are associated with a window and each window can have a
-separate list. This means you can have multiple windows, and multiple
-location lists, one for `Build`, one for `Check`, one for `Tests`, etc..
+* Vim'de iki tip hata listesi vardır. Bunlardan ilki`location list` ve
+diğeri `quickfix`.Ne yazık ki bu iki listenin komutları birbirinden farklı. Şöyle ki
+`:cnext` sadece `quickfix` liste için çalışır, `location lists` içinse
+`:lnext` kullanmalısınız.`vim-go` daki bazı komutlar bir `location list`açar çünkü `location list` ler bir pencereyle ilişkilidir ve her pencere ayrı listeye sahip olabilir. Bu demek oluyor ki bir `Build`, bir `Check` ya da bir `Test` için birden fazla pencereye ve adres listesine sahip olabiliyorsunuz. 
 
-Some people prefer to use only `quickfix` though. If you add the following to
-your `vimrc` all lists will be of type `quickfix`:
+Bazıları sadece `quickfix` i kullanmayı tercih eder.Eğer aşağıdaki kodu `vimrc` ye eklerseniz tüm listelerin tipi `quickfix` olur:
 
 ```vim
 let g:go_list_type = "quickfix"
 ```
 
-# Test it
+# Test et
 
-Let's write a simple function and a test for the function. Add the following:
+Basit bir fonksiyon ve o fonksiyon için bir test yazalım. Fonksiyonumuz şöyle olsun:
 
 
 ```go
@@ -172,23 +168,20 @@ func Bar() string {
 }
 ```
 
-Open a new file called `main_test.go` (it doesn't matter how you open it, from
-inside Vim, a separate Vim session, etc.. it's up to you). Let us use the
-current buffer and open it from Vim via `:edit main_test.go`.
+`main_test.go` adında yeni bir dosya açalım (nasıl açtığınızın hiç önemi yok, Vim'in içinde yeni bir session oluşturarak da açabilirsiniz, ya da direkt Vim'in içinden de açabilirsiniz, bu tamamen size kalmış).Şu andaki buffer'ı kullanarak Vim üzerinden`:edit main_test.go` komutunu verelim.
 
-When you open the new file you notice something. The file automatically has the
-package declaration added:
+Yeni bir dosya oluşturduğunuzda bazı şeyleri gözden kaçırmamalısınız. Örneğin dosyayı ilk açtığınızda karşınıza bir paket tanımlaması çıkar.
 
 ```go
 package main
 ```
 
-This is done by vim-go automatically. It detected that the file is inside a
+Bu vim-go tarafından otomatik olarak yapılmıştır.  It detected that the file is inside a
 valid package and therefore created a file based on the package name (in our
-case the package name was `main`). If there are no files, vim-go automatically
+case the package name was `main`). Eğer herhangi bir dosya yoksa If there are no files, vim-go automatically
 populates the content with a simple main package.
 
-Update the test file with the following code:
+Test dosyasının içeriğini aşağıdaki gibi değiştirin:
 
 ```go
 package main
@@ -205,15 +198,14 @@ func TestBar(t *testing.T) {
 }
 ```
 
-Call `:GoTest`. You'll see the following message:
+Ve ardından `:GoTest` komutunu verin. Testlerden başarıyla geçtiğini göreceksiniz.:
 
 ```
 vim-go: [test] PASS
 ```
 
-`:GoTest` calls `go test` under the hood. It has the same improvements
-we have for `:GoBuild`. If there is any test error, a quickfix list is
-opened again and you can jump to it easily.
+`:GoTest` arkaplanda `go test` komutunu çalıştırır. It has the same improvements
+we have for `:GoBuild`. Eğer bir yerlerde test hatası varsa bir quickfix list açılır ve o hataya kolayca gidebilirsiniz.
 
 Another small improvement is that you don't have to open the test file itself.
 Try it yourself: open `main.go` and call `:GoTest`. You'll see the tests will
