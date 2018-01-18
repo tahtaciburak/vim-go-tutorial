@@ -207,16 +207,12 @@ vim-go: [test] PASS
 `:GoTest` arkaplanda `go test` komutunu çalıştırır. It has the same improvements
 we have for `:GoBuild`. Eğer bir yerlerde test hatası varsa bir quickfix list açılır ve o hataya kolayca gidebilirsiniz.
 
-Another small improvement is that you don't have to open the test file itself.
-Try it yourself: open `main.go` and call `:GoTest`. You'll see the tests will
-be run for you as well.
+Başka bir küçük iyileştirme ise test dosyalarını kendiniz açmak zorunda olmayışınız. Kendiniz deneyebilirsiniz: `main.go` yu açın ve ardından `:GoTest` komutunu verin. Testleri sizin yerinize gerçekleştirecektir.
 
-`:GoTest` times out after 10 seconds by default. This is useful because Vim is
-not async by default. You can change the timeout value with `let g:go_test_timeout = '10s'`
+`:GoTest` öntanımlı olarak 10 saniye zaman aşımına sahiptir. Çünkü Vim öntanımlı olarak asenkron değildir. Eğer isterseniz zaman aşımı değerini `let g:go_test_timeout = '10s'` ile değiştirebilirsiniz.
 
-We have two more commands that makes it easy to deal with test files. The first
-one is `:GoTestFunc`. This only tests the function under your cursor.
-Let us change the content of the test file (`main_test.go`) to:
+Bunlara ek olarak test dosyalarıyla çalışmanızı kolaylaştıracak iki komut daha var. Bunlardan ilki `:GoTestFunc`, bu komut yalnızca cursor'ün altındaki fonksiyonu test eder.
+(`main_test.go`) dosyasının içeriğini aşağıdaki gibi değiştirelim :
 
 ```go
 package main
@@ -241,10 +237,12 @@ func TestQuz(t *testing.T) {
 }
 ```
 
-Now when we call `:GoTest` a quickfix window will open with two errors.
-However if go inside the `TestBar` function and call `:GoTestFunc`, you'll see
-that our test passes!  This is really useful if you have a lot of tests that
-take time and you only want to run certain tests.
+Şimdi biz ne zaman `:GoTest` komutunu çağırsak quickfix penceresi iki hata mesajıyla açılacak.
+Ancak `TestBar` fonksiyonun içine gidip `:GoTestFunc` komutunu çağırırsak testlerden geçtiğini görürüz.
+Bu özellik çok fazla testiniz olduğu durumlarda, sadece o anki testi yürütmek istediğiniz zamanlarda işinizi oldukça kolaylaştıracaktır.
+
+Testlere ilişkin diğer komut ise `:GoTestCompile`. Kodunuzun sadece testlerden başarıyla geçmesi yeterli değildir.
+Aynı zamanda hata almadan derlenebilmesi gerekmektedir. Bu bağlamda `:GoTestCompile` sizin test dosyanızı derler, tıpkı `:GoBuild` bir quickfix açmış gibi, eğer
 
 The other test-related command is `:GoTestCompile`. Tests not only need to
 pass with success, they must compile without any problems.
